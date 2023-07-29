@@ -41,7 +41,7 @@ def create_formatter(name, column_formats=None, upper_headers=False):
     elif name == 'html':
         formatter_cls = HTMLTableFormatter
     else:
-        raise RuntimeError('Unknown format %s' % name)
+        raise RuntimeError(f'Unknown format {name}')
 
     if column_formats:
         class formatter_cls(ColumnFormatMixin, formatter_cls):

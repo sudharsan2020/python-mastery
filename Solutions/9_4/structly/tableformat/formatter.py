@@ -39,10 +39,10 @@ class UpperHeadersMixin:
 def create_formatter(name, column_formats=None, upper_headers=False):
     if name not in TableFormatter._formats:
         __import__(f'{__package__}.formats.{name}')
-        
+
     formatter_cls = TableFormatter._formats.get(name)
     if not formatter_cls:
-        raise RuntimeError('Unknown format %s' % name)
+        raise RuntimeError(f'Unknown format {name}')
 
     if column_formats:
         class formatter_cls(ColumnFormatMixin, formatter_cls):

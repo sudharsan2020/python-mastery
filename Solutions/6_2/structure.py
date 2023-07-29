@@ -16,8 +16,7 @@ class Structure:
         if name.startswith('_') or name in self._fields:
             super().__setattr__(name, value)
         else:
-            raise AttributeError('No attribute %s' % name)
+            raise AttributeError(f'No attribute {name}')
 
     def __repr__(self):
-        return '%s(%s)' % (type(self).__name__,
-                           ', '.join(repr(getattr(self, name)) for name in self._fields))
+        return f"{type(self).__name__}({', '.join(repr(getattr(self, name)) for name in self._fields)})"

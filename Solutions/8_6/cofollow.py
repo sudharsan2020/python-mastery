@@ -15,7 +15,7 @@ def follow(filename,target):
 
 def receive(expected_type):
     msg = yield
-    assert isinstance(msg, expected_type), 'Expected type %s' % (expected_type)
+    assert isinstance(msg, expected_type), f'Expected type {expected_type}'
     return msg
 
 # Decorator for coroutines

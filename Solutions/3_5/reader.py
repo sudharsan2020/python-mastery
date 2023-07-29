@@ -23,6 +23,5 @@ def read_csv_as_instances(filename, cls):
     with open(filename) as f:
         rows = csv.reader(f)
         headers = next(rows)
-        for row in rows:
-            records.append(cls.from_row(row))
+        records.extend(cls.from_row(row) for row in rows)
     return records
