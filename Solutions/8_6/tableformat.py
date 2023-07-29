@@ -38,13 +38,13 @@ class HTMLTableFormatter(TableFormatter):
     def headings(self, headers):
         print('<tr>', end=' ')
         for h in headers:
-            print('<th>%s</th>' % h, end=' ')
+            print(f'<th>{h}</th>', end=' ')
         print('</tr>')
 
     def row(self, rowdata):
         print('<tr>', end=' ')
         for d in rowdata:
-            print('<td>%s</td>' % d, end=' ')
+            print(f'<td>{d}</td>', end=' ')
         print('</tr>')
 
 class ColumnFormatMixin:
@@ -65,7 +65,7 @@ def create_formatter(name, column_formats=None, upper_headers=False):
     elif name == 'html':
         formatter_cls = HTMLTableFormatter
     else:
-        raise RuntimeError('Unknown format %s' % name)
+        raise RuntimeError(f'Unknown format {name}')
 
     if column_formats:
         class formatter_cls(ColumnFormatMixin, formatter_cls):
