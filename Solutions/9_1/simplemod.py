@@ -4,7 +4,7 @@ x = 42        # A global variable
 
 # A simple function
 def foo():   
-    print("x is %s" % x)
+    print(f"x is {x}")
 
 # A simple class
 class Spam:

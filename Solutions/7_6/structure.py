@@ -5,13 +5,13 @@ from collections import ChainMap
 
 class StructureMeta(type):
     @classmethod
-    def __prepare__(meta, clsname, bases):
+    def __prepare__(cls, clsname, bases):
         return ChainMap({}, Validator.validators)
         
     @staticmethod
-    def __new__(meta, name, bases, methods):
+    def __new__(cls, name, bases, methods):
         methods = methods.maps[0]
-        return super().__new__(meta, name, bases, methods)
+        return super().__new__(cls, name, bases, methods)
 
 class Structure(metaclass=StructureMeta):
     _fields = ()
@@ -21,11 +21,10 @@ class Structure(metaclass=StructureMeta):
         if name.startswith('_') or name in self._fields:
             super().__setattr__(name, value)
         else:
-            raise AttributeError('No attribute %s' % name)
+            raise AttributeError(f'No attribute {name}')
 
     def __repr__(self):
-        return '%s(%s)' % (type(self).__name__,
-                           ', '.join(repr(getattr(self, name)) for name in self._fields))
+        return f"{type(self).__name__}({', '.join(repr(getattr(self, name)) for name in self._fields)})"
 
     @classmethod
     def from_row(cls, row):
@@ -66,20 +65,20 @@ def validate_attributes(cls):
             setattr(cls, name, validated(val))
 
     # Collect all of the field names
-    cls._fields = tuple([v.name for v in validators])
+    cls._fields = tuple(v.name for v in validators)
 
     # Collect type conversions. The lambda x:x is an identity
     # function that's used in case no expected_type is found.
-    cls._types = tuple([ getattr(v, 'expected_type', lambda x: x)
-                   for v in validators ])
+    cls._types = tuple(
+        getattr(v, 'expected_type', lambda x: x) for v in validators
+    )
 
     # Create the __init__ method
     if cls._fields:
         cls.create_init()
 
-    
+
     return cls
 
 def typed_structure(clsname, **validators):
-    cls = type(clsname, (Structure,), validators)
-    return cls
+    return type(clsname, (Structure,), validators)
